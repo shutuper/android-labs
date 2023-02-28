@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent">
+
+    <TextView
+            android:id="@+id/textView"
+            android:layout_width="327dp"
+            android:layout_height="63dp"
+            android:text="Chose any expression:"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.143"/>
+
+    <RadioGroup
+            android:id="@+id/Expressions"
+            android:layout_width="249dp"
+            android:layout_height="137dp"
+            app:layout_constraintBottom_toTopOf="@+id/OkButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintVertical_bias="0.405" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5">
+
+        <RadioButton
+                android:id="@+id/radioButton2"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:text="lg(1)" android:minHeight="48dp" android:textSize="20sp"/>
+        <RadioButton
+                android:id="@+id/twoPlusTwo"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:text="2 + 2" android:textSize="20sp"/>
+        <View
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/view"/>
+
+    </RadioGroup>
+    <Button
+            android:id="@+id/OkButton"
+            android:layout_width="134dp"
+            android:layout_height="70dp"
+            android:text="Ok"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.462"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintVertical_bias="0.683"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
