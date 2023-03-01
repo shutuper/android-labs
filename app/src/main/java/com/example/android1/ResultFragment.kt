@@ -24,7 +24,7 @@ class ResultFragment : Fragment(R.layout.result_fragment) {
         val bundle = arguments
 
         if (bundle != null) {
-            result = "Result: ${bundle.getString("result")!!}"
+            result = bundle.getString("result")!!
         }
     }
 
