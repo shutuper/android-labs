@@ -6,14 +6,63 @@
                                                    android:layout_height="match_parent"
                                                    tools:context=".MainActivity">
 
-    <FrameLayout
-            android:id="@+id/fg"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.454"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+    <VideoView
+            android:id="@+id/videoView"
+            android:layout_width="416dp"
+            android:layout_height="435dp"
+            android:layout_gravity="center_horizontal"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginBottom="64dp"
+            app:layout_constraintBottom_toTopOf="@+id/filePathTextView"/>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="650dp" app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+                android:id="@+id/playButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Play"
+                android:layout_weight="1"
+                android:layout_marginRight="8dp"/>
+
+        <Button
+                android:id="@+id/pauseButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pause"
+                android:layout_weight="1"
+                android:layout_marginRight="8dp"/>
+        <Button
+                android:id="@+id/stopButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stop"
+                android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <Button
+            android:id="@+id/chooseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose file"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="550dp" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="140dp"/>
+    <TextView
+            android:id="@+id/filePathTextView"
+            android:layout_width="249dp"
+            android:layout_height="18dp"
+            android:layout_gravity="center_horizontal"
+            android:text="No file selected"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="64dp"
+            app:layout_constraintTop_toBottomOf="@+id/videoView" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="81dp" android:layout_marginEnd="81dp"
+            app:layout_constraintEnd_toEndOf="parent" android:textAlignment="center"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
