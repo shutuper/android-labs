@@ -1,129 +1,64 @@
 package com.example.android1
 
-import android.content.res.Configuration
-import android.media.MediaPlayer
-import android.net.Uri
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Bundle
-import android.view.View
-import android.widget.Button
-import android.widget.FrameLayout
 import android.widget.TextView
-import android.widget.VideoView
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import kotlin.math.atan2
 
+class MainActivity : AppCompatActivity(), SensorEventListener {
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
-
-    private lateinit var videoView: VideoView
-    private lateinit var mediaPlayer: MediaPlayer
-    private lateinit var playButton: Button
-    private lateinit var pauseButton: Button
-    private lateinit var stopButton: Button
-    private lateinit var chooseButton: Button
-    private lateinit var filePathTextView: TextView
-    private lateinit var mediaUri: Uri
+    // Declare variables
+    private lateinit var sensorManager: SensorManager
+    private lateinit var sensor: Sensor
+    private lateinit var textView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        mediaPlayer = MediaPlayer()
+        // Initialize the TextView
+        textView = findViewById(R.id.text_view)
 
-        videoView = findViewById(R.id.videoView)
-        videoView.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, 800)
-
-        playButton = findViewById(R.id.playButton)
-        pauseButton = findViewById(R.id.pauseButton)
-        stopButton = findViewById(R.id.stopButton)
-        chooseButton = findViewById(R.id.chooseButton)
-        filePathTextView = findViewById(R.id.filePathTextView)
-
-        playButton.setOnClickListener(this)
-        pauseButton.setOnClickListener(this)
-        stopButton.setOnClickListener(this)
-        chooseButton.setOnClickListener {
-            openMediaLauncher.launch("*/*")
-        }
-
+        // Initialize the sensor manager and accelerometer sensor
+        sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
     }
 
-    override fun onClick(v: View) {
-        val isVideo = mediaUri.toString().contains(".mp4")
-        try {
-            when (v.id) {
-                R.id.playButton ->
-                    if (mediaUri.toString().contains(".mp4")) {
-                        mediaPlayer.stop()
-                        mediaPlayer.release()
-                        mediaPlayer = MediaPlayer()
-                        playVideo()
-                    } else playAudio()
+    override fun onResume() {
+        super.onResume()
 
-                R.id.pauseButton ->
-                    if (isVideo && videoView.isPlaying) {
-                        videoView.pause()
-                    } else if (isVideo) {
-                        videoView.start()
-                    } else if (mediaPlayer.isPlaying) {
-                        mediaPlayer.pause()
-                    } else {
-                        mediaPlayer.start()
-                    }
-
-                R.id.stopButton ->
-                    if (isVideo && videoView.isPlaying) {
-                        videoView.stopPlayback()
-                        videoView.setOnPreparedListener(null)
-                        videoView.setOnCompletionListener(null)
-                        videoView.setOnErrorListener(null)
-                        videoView.suspend()
-                    } else if (mediaPlayer.isPlaying) {
-                        mediaPlayer.stop()
-                        mediaPlayer.release()
-                        mediaPlayer = MediaPlayer()
-                    }
-
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        // Register the listener for the accelerometer sensor
+        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL)
     }
 
-    private fun playVideo() {
-        videoView.setVideoURI(mediaUri)
-        videoView.start()
+    override fun onPause() {
+        super.onPause()
+
+        // Unregister the listener for the accelerometer sensor
+        sensorManager.unregisterListener(this)
     }
 
-    private fun playAudio() {
-        try {
-            mediaPlayer.setDataSource(applicationContext, mediaUri)
-            mediaPlayer.prepare()
-            mediaPlayer.start()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+        // Not used in this example
     }
 
-    private val openMediaLauncher =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            if (uri != null && uri.toString().matches(Regex(".*\\.mp[3|4]"))) {
-                mediaUri = uri
-                val path = mediaUri.path.toString()
-                filePathTextView.text = path.substring(path.lastIndexOf('/') + 1)
-            }
-        }
+    override fun onSensorChanged(event: SensorEvent?) {
+        if (event?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            // Горизонтальна орієнтація екрану
-            videoView.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
-        } else {
-            // Вертикальна орієнтація екрану
-            videoView.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, 800)
+            // Get the x and y values from the accelerometer sensor
+            val x = event.values[0]
+            val y = event.values[1]
+
+            // Calculate the angle using the atan2 function and convert to degrees
+            val angle = atan2(y.toDouble(), x.toDouble()) * (180 / Math.PI)
+
+            // Display the angle in the TextView
+            textView.text = "Angle: ${angle.toInt() - 90}°"
         }
     }
-
 
 }
